@@ -45,10 +45,10 @@ node skills/rss-telegram-digest/scripts/rss.js check --format json
 ### Generate a digest (scheduled mode: since last run)
 
 ```bash
-node skills/rss-telegram-digest/scripts/digest.js --mode scheduled --fallback-since 24h --limit 10 --max-per-feed 2
+node skills/rss-telegram-digest/scripts/digest.js --mode scheduled --fallback-since 24h --limit 10 --max-per-feed 3 --max-per-feed-macrumors 2
 ```
 
-`--max-per-feed 2` prevents a single high-volume source (e.g. MacRumors) from dominating the Top 10.
+`--max-per-feed 3 --max-per-feed-macrumors 2` prevents a single high-volume source (e.g. MacRumors) from dominating the Top 10.
 
 - `--mode scheduled` updates the state file so the next scheduled digest only includes newer items.
 - `--fallback-since 24h` is used on the very first run (or if the state file is missing).

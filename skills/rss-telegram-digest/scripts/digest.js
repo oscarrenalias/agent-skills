@@ -21,7 +21,9 @@ function parseArgs(argv) {
     mode: 'scheduled',
     fallbackSince: '24h',
     limit: 10,
-    maxPerFeed: 2,
+    // Diversity caps
+    maxPerFeed: 3,
+    maxPerFeedMacRumors: 2,
     keywords: '',
   };
 
@@ -31,6 +33,7 @@ function parseArgs(argv) {
     else if (a === '--fallback-since' && argv[i + 1]) out.fallbackSince = argv[++i];
     else if (a === '--limit' && argv[i + 1]) out.limit = Number(argv[++i]);
     else if (a === '--max-per-feed' && argv[i + 1]) out.maxPerFeed = Number(argv[++i]);
+    else if (a === '--max-per-feed-macrumors' && argv[i + 1]) out.maxPerFeedMacRumors = Number(argv[++i]);
     else if (a === '--keywords' && argv[i + 1]) out.keywords = argv[++i];
   }
   return out;
@@ -125,36 +128,45 @@ function twoLineBlurb(desc) {
   return clipped;
 }
 
-function pickDiverseTop(items, limit, maxPerFeed) {
+function isMacRumors(it) {
+  const s = `${it.feedName || ''} ${it.link || ''}`.toLowerCase();
+  return s.includes('macrumors');
+}
+
+function pickDiverseTop(items, limit, maxPerFeedDefault, maxPerFeedMacRumors) {
   if (!items.length) return [];
 
-  // Try strict cap first; if we can't fill the limit, relax gradually.
-  for (let cap = maxPerFeed; cap <= Math.max(maxPerFeed, 10); cap++) {
+  const baseDefault = Math.max(1, Number(maxPerFeedDefault) || 3);
+  const baseMac = Math.max(1, Number(maxPerFeedMacRumors) || 2);
+
+  // Try strict caps first; if we can't fill the limit, relax gradually.
+  for (let relax = 0; relax <= 8; relax++) {
+    const capDefault = baseDefault + relax;
+    const capMac = baseMac + relax;
+
     const counts = new Map();
     const picked = [];
 
     for (const it of items) {
       const key = it.feedName || 'unknown';
       const n = counts.get(key) || 0;
+      const cap = isMacRumors(it) ? capMac : capDefault;
       if (n >= cap) continue;
       counts.set(key, n + 1);
       picked.push(it);
       if (picked.length >= limit) return picked;
     }
 
-    // If we got *something* but not enough, try relaxing further.
-    if (picked.length) {
-      if (cap >= 10) return picked;
-    }
+    if (picked.length && relax >= 8) return picked;
   }
 
   return items.slice(0, limit);
 }
 
-function formatDigest(items, limit, maxPerFeed = 2) {
+function formatDigest(items, limit, maxPerFeedDefault = 3, maxPerFeedMacRumors = 2) {
   if (!items.length) return 'No new items found in your feeds for this window.';
 
-  const top = pickDiverseTop(items, limit, maxPerFeed);
+  const top = pickDiverseTop(items, limit, maxPerFeedDefault, maxPerFeedMacRumors);
 
   const lines = [];
   lines.push(`RSS Digest — Top ${top.length}`);
@@ -210,7 +222,7 @@ async function main() {
     .map(it => ({ ...it, _score: scoreItem(it, kw) }))
     .sort((a, b) => (b._score - a._score) || (new Date(b.date) - new Date(a.date)));
 
-  process.stdout.write(formatDigest(ranked, args.limit, args.maxPerFeed) + '\n');
+  process.stdout.write(formatDigest(ranked, args.limit, args.maxPerFeed, args.maxPerFeedMacRumors) + '\n');
 
   if (args.mode === 'scheduled') saveLastRun(now);
 }

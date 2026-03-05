@@ -1,0 +1,73 @@
+{
+  "feeds": [
+    {
+      "url": "https://news.ycombinator.com/rss",
+      "name": "Hacker News",
+      "category": "tech",
+      "enabled": true,
+      "lastChecked": "2026-03-05T22:24:35.472Z",
+      "lastItemDate": "2026-03-05T18:08:10.000Z"
+    },
+    {
+      "url": "https://www.reddit.com/r/LocalLLaMA/.rss",
+      "name": "LocalLlama",
+      "category": "ai",
+      "enabled": true,
+      "lastChecked": "2026-03-05T22:24:36.388Z",
+      "lastItemDate": "2026-02-19T07:15:35.000Z"
+    },
+    {
+      "url": "http://yle.fi/uutiset/rss/uutiset.rss?osasto=news",
+      "name": "Yle News | Tuoreimmat uutiset",
+      "category": "finland",
+      "enabled": true,
+      "lastChecked": "2026-03-05T22:24:36.488Z",
+      "lastItemDate": "2026-03-05T14:12:37.000Z"
+    },
+    {
+      "url": "http://feeds.arstechnica.com/arstechnica/everything",
+      "name": "Ars Technica",
+      "category": "tech",
+      "enabled": true,
+      "lastChecked": "2026-03-05T22:24:36.519Z",
+      "lastItemDate": "2026-03-05T18:55:13.000Z"
+    },
+    {
+      "url": "http://www.macrumors.com/macrumors.xml",
+      "name": "MacRumors: Mac News and Rumors - Front Page",
+      "category": "apple",
+      "enabled": true,
+      "lastChecked": "2026-03-05T22:24:36.617Z",
+      "lastItemDate": "2026-03-05T20:01:00.000Z"
+    },
+    {
+      "url": "http://feeds.feedburner.com/Techcrunch",
+      "name": "Crunch Hype",
+      "category": "tech",
+      "enabled": true,
+      "lastChecked": "2026-03-05T22:24:36.923Z",
+      "lastItemDate": "2025-12-04T05:37:00.000Z"
+    },
+    {
+      "url": "http://www.eurogamer.net/rss/eurogamer_frontpage_feed.rss",
+      "name": "Eurogamer.net Latest Articles Feed",
+      "category": "gaming",
+      "enabled": true,
+      "lastChecked": "2026-03-05T22:24:37.132Z",
+      "lastItemDate": "2026-03-05T20:00:00.000Z"
+    },
+    {
+      "url": "http://feeds.feedburner.com/RockPaperShotgun",
+      "name": "Rock, Paper, Shotgun",
+      "category": "gaming",
+      "enabled": true,
+      "lastChecked": "2026-03-05T22:24:37.324Z",
+      "lastItemDate": "2026-03-05T21:32:42.000Z"
+    }
+  ],
+  "settings": {
+    "maxItemsPerFeed": 10,
+    "maxAgeDays": 7,
+    "summaryEnabled": true
+  }
+}
